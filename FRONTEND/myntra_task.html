@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Myntra Clone</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+background:white;
+padding:15px 40px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.navbar-brand{
+font-size:40px;
+font-weight:bold;
+color:#ff3f6c !important;
+}
+
+.nav-link{
+color:black !important;
+font-weight:700;
+margin-right:15px;
+font-size:14px;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+width:400px;
+background:#f5f5f6;
+border:none;
+padding:10px;
+}
+
+/* ================= ICONS ================= */
+
+.icon-box{
+text-align:center;
+margin-left:25px;
+cursor:pointer;
+position:relative;
+}
+
+.icon-box i{
+font-size:22px;
+}
+
+.icon-box p{
+font-size:13px;
+margin:0;
+font-weight:600;
+}
+
+/* ================= MEGA MENU ================= */
+
+.nav-item{
+position:relative;
+}
+
+.mega-menu{
+position:absolute;
+left:-100px;
+top:55px;
+width:1100px;
+background:white;
+padding:30px;
+display:none;
+box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+
+.nav-item:hover .mega-menu{
+display:block;
+}
+
+.mega-menu h6{
+color:#ee5f73;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.mega-menu a{
+display:block;
+text-decoration:none;
+color:#555;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.mega-menu a:hover{
+color:#ff3f6c;
+}
+
+/* ================= PROFILE ================= */
+
+.profile{
+position:relative;
+}
+
+.profile-menu{
+position:absolute;
+top:55px;
+right:0;
+width:260px;
+background:white;
+padding:20px;
+border-radius:5px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+display:none;
+}
+
+.profile:hover .profile-menu{
+display:block;
+}
+
+.login-btn{
+width:100%;
+border:1px solid #ff3f6c;
+color:#ff3f6c;
+background:white;
+padding:10px;
+font-weight:bold;
+margin:15px 0;
+}
+
+/* ================= OFFER BOX ================= */
+
+.offer-box{
+position:fixed;
+right:0;
+top:300px;
+background:#555;
+color:white;
+padding:10px;
+writing-mode:vertical-rl;
+transform:rotate(180deg);
+font-weight:bold;
+z-index:1000;
+}
+
+/* ================= CAROUSEL ================= */
+
+.carousel img{
+height:500px;
+object-fit:cover;
+}
+
+/* ================= WATCHES ================= */
+
+.watch-section{
+background:white;
+padding:50px 20px;
+}
+
+.watch-card{
+border:none;
+transition:0.3s;
+cursor:pointer;
+}
+
+.watch-card:hover{
+transform:translateY(-5px);
+}
+
+.watch-card img{
+width:100%;
+height:280px;
+object-fit:cover;
+}
+
+.price{
+font-size:20px;
+font-weight:bold;
+}
+
+.old-price{
+text-decoration:line-through;
+color:gray;
+}
+
+.discount{
+color:#ff905a;
+font-weight:bold;
+}
+
+/* ================= PRODUCT PAGE ================= */
+
+.product-page{
+background:white;
+margin-top:20px;
+padding:50px;
+}
+
+.product-page img{
+width:100%;
+}
+
+.rating-box{
+border:1px solid #ddd;
+display:inline-block;
+padding:5px 10px;
+border-radius:5px;
+margin:15px 0;
+}
+
+.add-btn{
+background:#ff3f6c;
+color:white;
+border:none;
+padding:15px 40px;
+font-weight:bold;
+border-radius:5px;
+}
+
+.wishlist-btn{
+background:white;
+border:1px solid #ccc;
+padding:15px 40px;
+font-weight:bold;
+border-radius:5px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+background:white;
+padding:50px;
+margin-top:40px;
+}
+
+footer h6{
+font-weight:bold;
+margin-bottom:15px;
+}
+
+footer a{
+display:block;
+text-decoration:none;
+color:#555;
+margin-bottom:10px;
+}
+
+footer a:hover{
+color:#ff3f6c;
+}
+
+.social-icons i{
+font-size:25px;
+margin-right:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+<div class="container-fluid">
+
+<a class="navbar-brand" href="#">M</a>
+
+<button class="navbar-toggler"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#navbarNav">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse"
+id="navbarNav">
+
+<ul class="navbar-nav">
+
+<!-- MEN -->
+
+<li class="nav-item">
+
+<a class="nav-link" href="#">
+MEN
+</a>
+
+<div class="mega-menu">
+
+<div class="row">
+
+<div class="col-md-2">
+
+<h6>Topwear</h6>
+
+<a href="#">T-Shirts</a>
+<a href="#">Casual Shirts</a>
+<a href="#">Formal Shirts</a>
+<a href="#">Sweatshirts</a>
+<a href="#">Jackets</a>
+
+</div>
+
+<div class="col-md-2">
+
+<h6>Bottomwear</h6>
+
+<a href="#">Jeans</a>
+<a href="#">Track Pants</a>
+<a href="#">Shorts</a>
+
+</div>
+
+<div class="col-md-2">
+
+<h6>Footwear</h6>
+
+<a href="#">Sports Shoes</a>
+<a href="#">Casual Shoes</a>
+<a href="#">Flip Flops</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>Sports & Active Wear</h6>
+
+<a href="#">Track Pants</a>
+<a href="#">Sports Shoes</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>Fashion Accessories</h6>
+
+<a href="#">Wallets</a>
+<a href="#">Belts</a>
+
+<a href="#watch-section">
+Watches
+</a>
+
+<a href="#">Perfumes</a>
+
+</div>
+
+</div>
+
+</div>
+
+</li>
+
+<!-- WOMEN -->
+
+<li class="nav-item">
+
+<a class="nav-link" href="#">
+WOMEN
+</a>
+
+<div class="mega-menu">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<h6>Indian Wear</h6>
+
+<a href="#">Kurtas</a>
+<a href="#">Sarees</a>
+<a href="#">Leggings</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>Western Wear</h6>
+
+<a href="#">Dresses</a>
+<a href="#">Tops</a>
+<a href="#">Jeans</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>Beauty</h6>
+
+<a href="#">Makeup</a>
+<a href="#">Skincare</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>Footwear</h6>
+
+<a href="#">Heels</a>
+<a href="#">Flats</a>
+
+</div>
+
+</div>
+
+</div>
+
+</li>
+
+<!-- KIDS -->
+
+<li class="nav-item">
+
+<a class="nav-link" href="#">
+KIDS
+</a>
+
+<div class="mega-menu">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<h6>Boys Clothing</h6>
+
+<a href="#">T-Shirts</a>
+<a href="#">Jeans</a>
+
+</div>
+
+<div class="col-md-4">
+
+<h6>Girls Clothing</h6>
+
+<a href="#">Dresses</a>
+<a href="#">Skirts</a>
+
+</div>
+
+<div class="col-md-4">
+
+<h6>Toys</h6>
+
+<a href="#">Remote Cars</a>
+<a href="#">Games</a>
+
+</div>
+
+</div>
+
+</div>
+
+</li>
+
+<!-- HOME -->
+
+<li class="nav-item">
+
+<a class="nav-link" href="#">
+HOME
+</a>
+
+</li>
+
+<!-- BEAUTY -->
+
+<li class="nav-item">
+
+<a class="nav-link" href="#">
+BEAUTY
+</a>
+
+</li>
+
+</ul>
+
+<!-- SEARCH -->
+
+<form class="d-flex ms-4">
+
+<input type="search"
+class="form-control search-box"
+placeholder="Search for products, brands and more">
+
+</form>
+
+<!-- ICONS -->
+
+<div class="d-flex ms-auto">
+
+<!-- PROFILE -->
+
+<div class="icon-box profile">
+
+<i class="bi bi-person"></i>
+
+<p>Profile</p>
+
+<div class="profile-menu">
+
+<h5>Welcome</h5>
+
+<p>
+To access account and manage orders
+</p>
+
+<button class="login-btn">
+
+LOGIN / SIGNUP
+
+</button>
+
+<a href="#">Orders</a>
+<a href="#">Wishlist</a>
+<a href="#">Gift Cards</a>
+<a href="#">Contact Us</a>
+<a href="#">Myntra Insider</a>
+<a href="#">Coupons</a>
+<a href="#">Saved Cards</a>
+<a href="#">Saved Addresses</a>
+
+</div>
+
+</div>
+
+<!-- WISHLIST -->
+
+<div class="icon-box">
+
+<i class="bi bi-heart"></i>
+
+<p>Wishlist</p>
+
+</div>
+
+<!-- BAG -->
+
+<div class="icon-box">
+
+<i class="bi bi-bag"></i>
+
+<p>Bag</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- ================= OFFER ================= -->
+
+<div class="offer-box">
+
+UPTO ₹300 OFF
+
+</div>
+
+<!-- ================= CAROUSEL ================= -->
+
+<div id="slider"
+class="carousel slide"
+data-bs-ride="carousel">
+
+<div class="carousel-inner">
+
+<div class="carousel-item active">
+
+<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600"
+class="d-block w-100">
+
+</div>
+
+<div class="carousel-item">
+
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1600"
+class="d-block w-100">
+
+</div>
+
+<div class="carousel-item">
+
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1600"
+class="d-block w-100">
+
+</div>
+
+</div>
+
+<button class="carousel-control-prev"
+type="button"
+data-bs-target="#slider"
+data-bs-slide="prev">
+
+<span class="carousel-control-prev-icon"></span>
+
+</button>
+
+<button class="carousel-control-next"
+type="button"
+data-bs-target="#slider"
+data-bs-slide="next">
+
+<span class="carousel-control-next-icon"></span>
+
+</button>
+
+</div>
+
+<!-- ================= WATCH SECTION ================= -->
+
+<section class="watch-section"
+id="watch-section">
+
+<div class="container-fluid">
+
+<h2 class="fw-bold mb-5">
+Mens Watches
+</h2>
+
+<div class="row">
+
+<!-- FILTER -->
+
+<div class="col-md-2">
+
+<h5 class="fw-bold">
+FILTERS
+</h5>
+
+<hr>
+
+<h6>BRAND</h6>
+
+<div class="form-check">
+
+<input class="form-check-input"
+type="checkbox">
+
+<label class="form-check-label">
+
+Titan
+
+</label>
+
+</div>
+
+<div class="form-check">
+
+<input class="form-check-input"
+type="checkbox">
+
+<label class="form-check-label">
+
+Casio
+
+</label>
+
+</div>
+
+</div>
+
+<!-- PRODUCTS -->
+
+<div class="col-md-10">
+
+<div class="row g-4">
+
+<!-- WATCH 1 -->
+
+<div class="col-md-3">
+
+<div class="card watch-card shadow-sm">
+
+<img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1000">
+
+<div class="card-body">
+
+<h6 class="fw-bold">
+
+Titan
+
+</h6>
+
+<p class="text-muted">
+
+Men Analogue Watch
+
+</p>
+
+<div>
+
+<span class="price">
+
+₹2265
+
+</span>
+
+<span class="old-price">
+
+₹4195
+
+</span>
+
+<span class="discount">
+
+(46% OFF)
+
+</span>
+
+</div>
+
+<button class="btn btn-danger w-100 mt-3">
+
+ADD TO BAG
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- WATCH 2 -->
+
+<div class="col-md-3">
+
+<div class="card watch-card shadow-sm">
+
+<img src="https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?q=80&w=1000">
+
+<div class="card-body">
+
+<h6 class="fw-bold">
+
+CASIO
+
+</h6>
+
+<p class="text-muted">
+
+Vintage Digital Watch
+
+</p>
+
+<div>
+
+<span class="price">
+
+₹1895
+
+</span>
+
+<span class="old-price">
+
+₹2999
+
+</span>
+
+<span class="discount">
+
+(40% OFF)
+
+</span>
+
+</div>
+
+<button class="btn btn-danger w-100 mt-3">
+
+ADD TO BAG
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= PRODUCT PAGE ================= -->
+
+<section class="product-page">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-6">
+
+<img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1000">
+
+</div>
+
+<div class="col-md-6">
+
+<h2>
+
+Men Textured Bracelet Style Watch
+
+</h2>
+
+<div class="rating-box">
+
+4.3 ★ | 28 Ratings
+
+</div>
+
+<h2 class="fw-bold">
+
+₹2265
+
+<span class="old-price">
+
+₹4195
+
+</span>
+
+<span class="discount">
+
+(46% OFF)
+
+</span>
+
+</h2>
+
+<p class="text-success">
+
+inclusive of all taxes
+
+</p>
+
+<hr>
+
+<h5>
+
+SELECT SIZE
+
+</h5>
+
+<button class="btn btn-outline-danger rounded-pill">
+
+One Size
+
+</button>
+
+<div class="mt-4">
+
+<button class="add-btn">
+
+ADD TO BAG
+
+</button>
+
+<button class="wishlist-btn">
+
+WISHLIST
+
+</button>
+
+</div>
+
+<hr>
+
+<h5>
+
+Product Details
+
+</h5>
+
+<p>
+
+Premium analogue watch with stylish metallic chain strap.
+
+Perfect for office and casual wear.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<h6>ONLINE SHOPPING</h6>
+
+<a href="#">Men</a>
+<a href="#">Women</a>
+<a href="#">Kids</a>
+<a href="#">Home</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>CUSTOMER POLICIES</h6>
+
+<a href="#">Contact Us</a>
+<a href="#">FAQ</a>
+<a href="#">Shipping</a>
+<a href="#">Track Orders</a>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>EXPERIENCE APP</h6>
+
+<div class="social-icons">
+
+<i class="bi bi-facebook"></i>
+<i class="bi bi-instagram"></i>
+<i class="bi bi-twitter"></i>
+<i class="bi bi-youtube"></i>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<h6>100% ORIGINAL</h6>
+
+<p>Guarantee for all products</p>
+
+<h6>14 DAYS RETURN</h6>
+
+<p>Easy return available</p>
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+-- BEGIN
+-- FOR rec IN (SELECT empno, ename, salary FROM empk) LOOP
+-- DBMS_OUTPUT.PUT_LINE(rec.empno || ' ' || rec.ename || ' ' || rec.salary);
+-- END LOOP;
+-- END;
+-- /
+
+---------------------
+-----Increase Salary
+-- BEGIN
+-- FOR rec IN (SELECT empno, ename, salary FROM empk WHERE dept = 10) LOOP
+-- DBMS_OUTPUT.PUT_LINE(rec.ename || ' Old: ' || rec.salary || ' New: ' || rec.salary * 1.15);
+-- UPDATE empk SET salary = rec.salary * 1.15 WHERE empno = rec.empno;
+-- END LOOP;
+-- COMMIT;
+-- END;
+-- /
+
+-----------------------
+------Find Highest Paid Employee
+-- BEGIN
+-- FOR rec IN (SELECT ename, salary FROM empk ORDER BY salary DESC) LOOP
+-- DBMS_OUTPUT.PUT_LINE('Highest: ' || rec.ename || ' ' || rec.salary);
+-- EXIT;
+-- END LOOP;
+-- END;
+-- /
+
+----------------------
+------Department Wise 
+-- BEGIN
+-- FOR dept_rec IN (SELECT DISTINCT dept FROM empk) LOOP
+-- FOR emp_rec IN (SELECT COUNT(*) cnt FROM empk WHERE dept = dept_rec.dept) LOOP
+-- DBMS_OUTPUT.PUT_LINE('Dept ' || dept_rec.dept || ' : ' || emp_rec.cnt || ' employees');
+-- END LOOP;
+-- END LOOP;
+-- END;
+-- /
+
+-------------------
+------Delete Employees <20000
+-- BEGIN
+-- FOR rec IN (SELECT empno, ename FROM empk WHERE salary < 2000) LOOP
+-- DBMS_OUTPUT.PUT_LINE('Deleted: ' || rec.ename);
+-- DELETE FROM empk WHERE empno = rec.empno;
+-- END LOOP;
+-- COMMIT;
+-- END;
+-- /
+
+
+-----------------------
+----------if
+-- BEGIN
+-- FOR rec IN (SELECT ename, salary FROM empk) LOOP
+-- IF rec.salary > 5000 THEN
+-- DBMS_OUTPUT.PUT_LINE(rec.ename || ' - HIGH SALARY');
+-- ELSE
+-- DBMS_OUTPUT.PUT_LINE(rec.ename || ' - NORMAL SALARY');
+-- END IF;
+-- END LOOP;
+-- END;
+-- /
+
+
+---------------------------
+----------FOR UPDATE
+-- BEGIN
+-- FOR rec IN (SELECT empno FROM empk FOR UPDATE OF salary)
+-- LOOP
+-- UPDATE empk SET salary = salary + 1000
+-- WHERE CURRENT OF rec;
+-- END LOOP;
+-- COMMIT;
+-- END;
+-- /
+
+---------------------------------
+-----------para cursor
+-- DECLARE
+-- v_dept NUMBER := &dept_input;
+-- BEGIN
+-- FOR rec IN (SELECT ename FROM empk WHERE dept = v_dept) LOOP
+-- DBMS_OUTPUT.PUT_LINE(rec.ename);
+-- END LOOP;
+-- END;
+-- /
+
+-----------------------------
+------------ Nested Cursor
+-- BEGIN
+-- FOR dept_rec IN (SELECT DISTINCT dept FROM empk) LOOP
+-- DBMS_OUTPUT.PUT_LINE('Dept ' || dept_rec.dept || ':');
+-- FOR emp_rec IN (SELECT ename FROM empk WHERE dept = dept_rec.dept) LOOP
+-- DBMS_OUTPUT.PUT_LINE(' ' || emp_rec.ename);
+-- END LOOP;
+-- END LOOP;
+-- END;
+
+----------------------
+--------bank
+-- BEGIN
+-- FOR rec IN (SELECT acc_no, balance, min_balance FROM bank_account FOR UPDATE OF balance) LOOP
+-- UPDATE bank_account SET balance = balance - 500 WHERE CURRENT OF rec;
+-- IF rec.balance - 500 < rec.min_balance THEN
+-- DBMS_OUTPUT.PUT_LINE('Warning: Account ' || rec.acc_no);
+-- END IF;
+-- END LOOP;
+-- COMMIT;
+-- END;
+-- /
+
+
+-------------------------------------------------------------------------------
+-- CREATE TABLE emp2 (id NUMBER, name VARCHAR2(50), dept NUMBER, sal NUMBER, hours NUMBER);
+-- CREATE TABLE acc2 (ano NUMBER, cust NUMBER, bal NUMBER, bid NUMBER);
+-- CREATE TABLE tx2 (tid NUMBER, ano NUMBER, type VARCHAR2(20), amt NUMBER, txdate DATE, ip VARCHAR2(20));
+-- CREATE TABLE loan2 (lid NUMBER, type VARCHAR2(30), amt NUMBER, rate NUMBER, emi NUMBER);
+-- CREATE TABLE cust2 (cid NUMBER, name VARCHAR2(50), city VARCHAR2(50), acctype VARCHAR2(20), bal NUMBER);
+-- CREATE TABLE branch2 (bid NUMBER, name VARCHAR2(50))
+
+-- INSERT INTO emp2 VALUES (1, 'John', 10, 50000, 40);
+-- INSERT INTO emp2 VALUES (2, 'Mary', 10, 60000, 38);
+-- INSERT INTO acc2 VALUES (101, 1, 10000, 1);
+-- INSERT INTO tx2 VALUES (1, 101, 'WD', 5000, SYSDATE, '192.1.1.1');
+-- INSERT INTO cust2 VALUES (1, 'John', 'Mumbai', 'Savings', 10000);
+-- INSERT INTO branch2 VALUES (1, 'Main Branch');
+-- COMMIT;
+
+-----------------------------------
+------ex cursor
+-- DECLARE
+-- CURSOR c1 IS SELECT id, sal FROM emp2 WHERE dept = 10;
+-- v_id emp2.id%TYPE;
+-- v_sal emp2.sal%TYPE;
+-- BEGIN
+-- OPEN c1;
+-- LOOP
+-- FETCH c1 INTO v_id, v_sal;
+-- EXIT WHEN c1%NOTFOUND;
+-- UPDATE emp2 SET sal = v_sal * 1.15 WHERE id = v_id;
+-- END LOOP;
+-- CLOSE c1;
+-- COMMIT;
+-- END;
+-- /
+
+-------------------------------------
+-----------cursor attribute
+-- DECLARE
+-- CURSOR c1 IS SELECT name FROM emp2;
+-- v_name emp2.name%TYPE;
+-- BEGIN
+-- OPEN c1;
+-- LOOP
+-- FETCH c1 INTO v_name;
+-- EXIT WHEN c1%NOTFOUND;
+-- DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+-- END LOOP;
+-- DBMS_OUTPUT.PUT_LINE('Total Rows: ' || c1%ROWCOUNT);
+-- CLOSE c1;
+-- END;
+-- /
+
+-------------------------------
+---------cursor for loop
+-- DECLARE
+-- CURSOR c1 IS SELECT name, dept, hours FROM emp2;
+-- BEGIN
+-- FOR r IN c1 LOOP
+-- DBMS_OUTPUT.PUT_LINE(r.name || ' - Dept ' || r.dept || ' - ' || r.hours || ' hrs');
+-- END LOOP;
+-- END;
+-- /
+
+------------------------------------
+---------parameter cursor
+-- DECLARE
+-- CURSOR c1(d NUMBER) IS SELECT name, sal FROM emp2 WHERE dept = d;
+-- v_dept NUMBER := &dept;
+-- BEGIN
+-- FOR r IN c1(v_dept) LOOP
+-- DBMS_OUTPUT.PUT_LINE(r.name || ' - ' || r.sal);
+-- END LOOP;
+-- END;
+-- /
+
+---------------------------
+------parameter cursor loan
+-- DECLARE
+-- CURSOR c1(t VARCHAR2) IS SELECT lid, amt, rate, emi FROM loan2 WHERE type = t;
+-- v_type VARCHAR2(30) := '&type';
+-- BEGIN
+-- FOR r IN c1(v_type) LOOP
+-- DBMS_OUTPUT.PUT_LINE('Loan: ' || r.lid || ', Amt: ' || r.amt || ', EMI: ' || r.emi);
+-- END LOOP;
+-- END;
+-- /
+
+------------------------
+-----for update
+-- DECLARE
+-- CURSOR c1 IS SELECT ano, bal FROM acc2 FOR UPDATE;
+-- BEGIN
+-- FOR r IN c1 LOOP
+-- UPDATE acc2 SET bal = bal + 5000 WHERE CURRENT OF c1;
+-- END LOOP;
+-- COMMIT;
+-- END;
+-- /
+
+---------------------------
+-------strong ref cursor
+-- DECLARE
+-- TYPE rc IS REF CURSOR RETURN emp2%ROWTYPE;
+-- c1 rc;
+-- r emp2%ROWTYPE;
+-- BEGIN
+-- OPEN c1 FOR SELECT * FROM emp2;
+-- LOOP
+-- FETCH c1 INTO r;
+-- EXIT WHEN c1%NOTFOUND;
+-- DBMS_OUTPUT.PUT_LINE(r.name || ' - ' || r.sal);
+-- END LOOP;
+-- CLOSE c1;
+-- END;
+-- /

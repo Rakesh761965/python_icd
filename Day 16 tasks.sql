@@ -1,0 +1,216 @@
+-- Task 1:
+BEGIN
+DBMS_OUTPUT.PUT_LINE('WELCOME TO PL/SQL');
+END;
+/
+
+-- Task 2:
+DECLARE
+v_emp_id NUMBER := 101;
+v_emp_name VARCHAR2(20) := 'HARSH';
+v_salary NUMBER := 45000;
+BEGIN
+DBMS_OUTPUT.PUT_LINE('EMP ID : ' || v_emp_id);
+DBMS_OUTPUT.PUT_LINE('EMP NAME : ' || v_emp_name);
+DBMS_OUTPUT.PUT_LINE('SALARY : ' || v_salary);
+END;
+/
+
+-- Task 3: 
+DECLARE
+v_num1 NUMBER := 25;
+v_num2 NUMBER := 10;
+v_sum NUMBER;
+v_diff NUMBER;
+v_mul NUMBER;
+v_div NUMBER;
+BEGIN
+v_sum := v_num1 + v_num2;
+v_diff := v_num1 - v_num2;
+v_mul := v_num1 * v_num2;
+v_div := v_num1 / v_num2;
+
+DBMS_OUTPUT.PUT_LINE('Sum : ' || v_sum);
+DBMS_OUTPUT.PUT_LINE('Difference : ' || v_diff);
+DBMS_OUTPUT.PUT_LINE('Multiplication : ' || v_mul);
+DBMS_OUTPUT.PUT_LINE('Division : ' || v_div);
+END;
+/
+
+-- Task 4:
+DECLARE
+v_salary NUMBER := 60000;
+BEGIN
+IF v_salary > 50000 THEN
+DBMS_OUTPUT.PUT_LINE('HIGH SALARY');
+END IF;
+END;
+/
+
+-- Task 5: IF ELSE 
+DECLARE
+v_num NUMBER := 7;
+BEGIN
+IF MOD(v_num, 2) = 0 THEN
+DBMS_OUTPUT.PUT_LINE(is EVEN);
+ELSE
+DBMS_OUTPUT.PUT_LINE( is ODD);
+END IF;
+END;
+/
+
+-- Task 6: IF ELSIF ELSE 
+DECLARE
+v_marks NUMBER := 85;
+v_grade VARCHAR2(1);
+BEGIN
+IF v_marks >= 90 THEN
+v_grade := 'A';
+ELSIF v_marks >= 75 THEN
+v_grade := 'B';
+ELSIF v_marks >= 60 THEN
+v_grade := 'C';
+ELSE
+v_grade := 'F';
+DBMS_OUTPUT.PUT_LINE('FAIL');
+END IF;
+
+IF v_grade != 'F' THEN
+DBMS_OUTPUT.PUT_LINE(v_grade);
+END IF;
+END;
+/
+
+-- Task 7: 
+DECLARE
+v_age NUMBER := 20;
+v_citizen VARCHAR2(3) := 'YES';
+BEGIN
+IF v_age > 18 THEN
+IF v_citizen = 'YES' THEN
+DBMS_OUTPUT.PUT_LINE('ELIGIBLE FOR VOTING');
+ELSE
+DBMS_OUTPUT.PUT_LINE('NOT ELIGIBLE');
+END IF;
+ELSE
+DBMS_OUTPUT.PUT_LINE('NOT ELIGIBLE');
+END IF;
+END;
+/
+
+-- Task 8:
+DECLARE
+v_counter NUMBER := 1;
+BEGIN
+LOOP
+DBMS_OUTPUT.PUT_LINE(v_counter);
+v_counter := v_counter + 1;
+EXIT WHEN v_counter > 10;
+END LOOP;
+END;
+/
+
+-- Task 9: WHILE LOOP
+DECLARE
+v_num NUMBER := 2;
+BEGIN
+WHILE v_num <= 20 LOOP
+DBMS_OUTPUT.PUT_LINE(v_num);
+v_num := v_num + 2;
+END LOOP;
+END;
+/
+
+-- Task 10: FOR LOOP
+DECLARE
+v_num NUMBER := 5;
+BEGIN
+FOR i IN 1..10 LOOP
+DBMS_OUTPUT.PUT_LINE(v_num || ' * ' || i || ' = ' || (v_num * i));
+END LOOP;
+END;
+/
+
+-- Task 11:
+BEGIN
+FOR i IN REVERSE 1..20 LOOP
+DBMS_OUTPUT.PUT_LINE(i);
+END LOOP;
+END;
+/
+
+ALTER TABLE EMJ
+ADD
+(
+BONUS NUMBER,
+TOTAL_SALARY NUMBER,
+GST NUMBER,
+INHAND_SALARY NUMBER
+);
+BEGIN
+UPDATE EMJ
+SET BONUS =
+CASE
+WHEN SALARY > 40000 THEN 5000
+ELSE 2000
+END,
+TOTAL_SALARY =
+CASE
+WHEN SALARY > 40000 THEN SALARY + 5000
+ELSE SALARY + 2000
+END,
+GST =
+CASE
+WHEN SALARY > 40000 THEN (SALARY + 5000) * 0.05 -- 5% on total salary
+ELSE (SALARY + 2000) * 0.05
+END,
+INHAND_SALARY =
+CASE
+WHEN SALARY > 40000 THEN (SALARY + 5000) - ((SALARY + 5000) * 0.05)
+ELSE (SALARY + 2000) - ((SALARY + 2000) * 0.05)
+END;
+COMMIT;
+END;
+/
+
+---------------------GST
+ALTER TABLE EMM
+ADD
+(
+BONUS NUMBER,
+TOTAL_SALARY NUMBER,
+GST NUMBER
+);
+
+
+BEGIN
+UPDATE EMM
+SET BONUS =
+CASE
+WHEN SALARY > 40000 THEN 5000
+ELSE 2000
+END,
+TOTAL_SALARY =
+CASE
+WHEN SALARY > 40000 THEN SALARY + 5000
+ELSE SALARY + 2000
+END,
+GST =
+CASE
+WHEN SALARY > 40000 THEN (SALARY + 5000) * 0.05
+ELSE (SALARY + 2000) * 0.05
+END;
+COMMIT;
+END;
+/
+
+
+SELECT
+EMP_ID,
+EMP_NAME,
+SALARY,
+BONUS,
+TOTAL_SALARY,
+GST,
+(TOTAL_SALARY - GST) AS INHAND_SALARY
+FROM EMM;
